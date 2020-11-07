@@ -1,5 +1,6 @@
 import * as router from "vue-router";
 import Index from "./pages/index.vue";
+import Show from "./pages/show.vue";
 
 export function createRouter(): router.Router {
   const r = router.createRouter({
@@ -8,6 +9,10 @@ export function createRouter(): router.Router {
       {
         path: "/",
         component: Index,
+      },
+      {
+        path: "/:id",
+        component: Show,
       },
     ],
   });

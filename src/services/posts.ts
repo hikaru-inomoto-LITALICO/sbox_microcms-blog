@@ -18,7 +18,7 @@ function mapPost(json: any): Post {
     author: {
       id: p.author.id,
       name: p.author.name,
-      picture: p.author.picture,
+      picture: p.author.picture.url,
       description: p.author.description,
     },
     tags: p.tags?.map((t: any) => ({
