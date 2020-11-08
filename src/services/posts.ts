@@ -33,7 +33,7 @@ function mapPost(json: any): Post {
 }
 
 async function call(method: string, path: string, expectedStatus: number) {
-  const key = localStorage.getItem("microcms-key");
+  const key = apikey();
   const resp = await fetch(`https://cumet04-dev.microcms.io/api/v1${path}`, {
     method,
     headers: {
@@ -47,4 +47,15 @@ async function call(method: string, path: string, expectedStatus: number) {
     };
   }
   return resp.json();
+}
+
+function apikey() {
+  const key = "__microcms_api_key__"; // This is replaced by vite(rollup)
+  const crackedPlaceholder = "__microcms_api_key_";
+  if (key.includes(crackedPlaceholder)) {
+    // key is not replaced = on development env
+    return localStorage.getItem("microcms-key") || "";
+  } else {
+    return key;
+  }
 }
