@@ -1,8 +1,9 @@
 <template>
   <main class="mx-auto max-w-screen-lg">
+    <h1 class="text-lg font-bold">Articles</h1>
     <Suspense>
       <template #default>
-        <post-detail :post="post"></post-detail>
+        <post-list :posts="posts"></post-list>
       </template>
       <template #fallback>
         <p>loading...</p>
@@ -13,18 +14,17 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import * as Posts from "../services/posts";
+import * as Posts from "../../services/posts";
 
-import PostDetail from "../components/PostDetail.vue";
-import { useRoute } from "vue-router";
+import PostList from "../../components/PostList.vue";
 
 export default defineComponent({
   components: {
-    "post-detail": PostDetail,
+    "post-list": PostList,
   },
   setup() {
-    const post = Posts.show(useRoute().params.id as string);
-    return { post };
+    const posts = Posts.index();
+    return { posts };
   },
 });
 </script>

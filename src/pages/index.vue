@@ -1,30 +1,16 @@
 <template>
   <main class="mx-auto max-w-screen-lg">
-    <h1 class="text-lg font-bold">Articles</h1>
-    <Suspense>
-      <template #default>
-        <post-list :posts="posts"></post-list>
-      </template>
-      <template #fallback>
-        <p>loading...</p>
-      </template>
-    </Suspense>
+    <h1 class="text-lg font-bold">Pages</h1>
+    <router-link to="/posts" class="text-indigo-600">posts</router-link>
   </main>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import * as Posts from "../services/posts";
-
-import PostList from "../components/PostList.vue";
 
 export default defineComponent({
-  components: {
-    "post-list": PostList,
-  },
   setup() {
-    const posts = Posts.index();
-    return { posts };
+    return {};
   },
 });
 </script>
