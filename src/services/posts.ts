@@ -14,30 +14,53 @@ function mapPost(json: any): Post {
     id: p.id,
     publishedAt: new Date(Date.parse(p.publishedAt)),
     title: p.title,
-    body: p.body,
-    author: {
-      id: p.author.id,
-      name: p.author.name,
-      picture: p.author.picture.url,
-      description: p.author.description,
-    },
-    tags: p.tags?.map((t: any) => ({
-      id: t.id,
-      title: t.title,
-    })),
-    footNotes: p.footNotes?.map((f: any, index: number) => ({
-      index: index + 1,
-      content: f.content,
-    })),
+    description: p.description,
+    visual: p.visual?.url,
+    categories: p.categories?.map((v: any) => mapCategory(v)),
+    contents: p.contents.map((v: any) => mapContent(v)),
+    supervisors: p.supervisors?.map((v: any) => mapSupervisor(v)),
   };
 }
 
+const mapCategory = (json: any): Category => ({
+  id: json.id,
+  title: json.title,
+});
+
+const mapContent = (json: any): Section | Image => {
+  switch (json.fieldId) {
+    case "section":
+      return {
+        type: "section",
+        html: json.content,
+      };
+    case "image":
+      return {
+        type: "image",
+        src: json.src.url,
+        alt: json?.alt,
+      };
+    default:
+      const msg = `unknown content fieldId: ${json.fieldId}`;
+      alert(msg);
+      throw `${msg}\n${json}`;
+  }
+};
+
+const mapSupervisor = (json: any): Supervisor => ({
+  id: json.id,
+  name: json.name,
+  picture: json?.picture?.url,
+  description: json?.description,
+});
+
+// api ------
+
 async function call(method: string, path: string, expectedStatus: number) {
-  const key = apikey();
-  const resp = await fetch(`https://cumet04-dev.microcms.io/api/v1${path}`, {
+  const resp = await fetch(`https://${apiName()}.microcms.io/api/v1${path}`, {
     method,
     headers: {
-      "X-API-KEY": key || "",
+      "X-API-KEY": apikey(),
     },
   });
   if (resp.status != expectedStatus) {
@@ -47,6 +70,17 @@ async function call(method: string, path: string, expectedStatus: number) {
     };
   }
   return resp.json();
+}
+
+function apiName() {
+  const key = "__microcms_api_name__"; // This is replaced by vite(rollup)
+  const crackedPlaceholder = "__microcms_api_name_";
+  if (key.includes(crackedPlaceholder)) {
+    // key is not replaced = on development env
+    return localStorage.getItem("microcms-name") || "";
+  } else {
+    return key;
+  }
 }
 
 function apikey() {

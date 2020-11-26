@@ -3,9 +3,9 @@
     <li v-for="p in posts" :key="p.id" class="flex p-2">
       <router-link :to="`/posts/${p.id}`">{{ p.title }} </router-link>
       <ul class="ml-4 flex">
-        <li v-for="t in p.tags" :key="t.id">
+        <li v-for="c in p.categories" :key="c.id">
           <router-link to="/" class="text-sm rounded bg-blue-200 m-1 p-1"
-            >{{ t.title }}
+            >{{ c.title }}
           </router-link>
         </li>
       </ul>

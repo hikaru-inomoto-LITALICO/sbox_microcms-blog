@@ -1,5 +1,5 @@
 <template>
-  <main class="mx-auto max-w-screen-lg">
+  <main class="mx-auto max-w-screen-md">
     <Suspense>
       <template #default>
         <post-detail :post="post"></post-detail>

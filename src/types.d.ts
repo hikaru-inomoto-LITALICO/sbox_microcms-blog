@@ -2,25 +2,32 @@ declare type Post = {
   id: string;
   publishedAt: Date;
   title: string;
-  body: string;
-  author: Author;
-  tags?: Tag[];
-  footNotes?: FootNote[];
+  description: string;
+  visual: string; // url
+  categories?: Category[];
+  contents: (Section | Image)[];
+  supervisors?: Supervisor[];
 };
 
-declare type Author = {
+declare type Supervisor = {
   id: string;
   name: string;
-  picture: string;
-  description: string;
+  picture?: string;
+  description?: string;
 };
 
-declare type Tag = {
+declare type Category = {
   id: string;
   title: string;
 };
 
-declare type FootNote = {
-  index: number;
-  content: string;
+declare type Section = {
+  type: "section";
+  html: string;
+};
+
+declare type Image = {
+  type: "image";
+  src: string; // url
+  alt: string;
 };
